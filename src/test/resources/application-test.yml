@@ -1,0 +1,15 @@
+yunxiao:
+  enabled: true
+  gateway-url: https://devops.cn-hangzhou.aliyuncs.com
+  access-key-id: ${YUNXIAO_ACCESS_KEY_ID:test-access-key-id}
+  access-key-secret: ${YUNXIAO_ACCESS_KEY_SECRET:test-access-key-secret}
+  timeout: 30000
+  connect-timeout: 10000
+  ssl-enabled: true
+  retry-count: 3
+  retry-interval: 1000
+
+logging:
+  level:
+    com.alibaba.cloud.yunxiao: DEBUG
+    root: INFO
