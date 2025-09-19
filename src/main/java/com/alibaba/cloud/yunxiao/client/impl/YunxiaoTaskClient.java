@@ -223,4 +223,18 @@ public class YunxiaoTaskClient extends AbstractYunxiaoClient implements TaskClie
             return buildErrorResponse(e.getMessage());
         }
     }
+
+    @Override
+    public BaseResponse<BatchCreateResponse> batchCreateTasks(BatchCreateRequest request) {
+        try {
+            String url = buildApiUrl("/workitems/batch");
+            String requestBody = JSON.toJSONString(request);
+            
+            HttpResponse response = sendRequest("POST", url, requestBody);
+            return parseResponse(response, BatchCreateResponse.class);
+        } catch (Exception e) {
+            log.error("批量创建任务失败", e);
+            return buildErrorResponse(e.getMessage());
+        }
+    }
 }

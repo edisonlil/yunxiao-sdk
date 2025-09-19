@@ -26,9 +26,6 @@ public class YunxiaoRequirementClient extends AbstractYunxiaoClient implements R
     @Override
     public BaseResponse<RequirementInfo> createRequirement(CreateRequirementRequest request) {
         try {
-            // 设置需求类型
-            request.setType("Requirement");
-            
             String url = buildApiUrl("/workitems");
             String requestBody = JSON.toJSONString(request);
             
@@ -220,6 +217,20 @@ public class YunxiaoRequirementClient extends AbstractYunxiaoClient implements R
             return parseResponse(response, BatchUpdateStatusResponse.class);
         } catch (Exception e) {
             log.error("批量修改需求状态失败", e);
+            return buildErrorResponse(e.getMessage());
+        }
+    }
+
+    @Override
+    public BaseResponse<BatchCreateResponse> batchCreateRequirements(BatchCreateRequest request) {
+        try {
+            String url = buildApiUrl("/workitems/batch");
+            String requestBody = JSON.toJSONString(request);
+            
+            HttpResponse response = sendRequest("POST", url, requestBody);
+            return parseResponse(response, BatchCreateResponse.class);
+        } catch (Exception e) {
+            log.error("批量创建需求失败", e);
             return buildErrorResponse(e.getMessage());
         }
     }

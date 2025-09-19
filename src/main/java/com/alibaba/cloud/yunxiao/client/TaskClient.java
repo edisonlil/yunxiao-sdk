@@ -45,4 +45,9 @@ public interface TaskClient {
      * 批量修改任务状态
      */
     BaseResponse<BatchUpdateStatusResponse> batchUpdateTaskStatus(BatchUpdateStatusRequest request);
+
+    /**
+     * 批量创建任务
+     */
+    BaseResponse<BatchCreateResponse> batchCreateTasks(BatchCreateRequest request);
 }

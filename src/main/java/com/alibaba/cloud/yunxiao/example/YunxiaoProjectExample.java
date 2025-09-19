@@ -175,15 +175,14 @@ public class YunxiaoProjectExample {
         
         // 构建创建需求请求
         CreateRequirementRequest request = new CreateRequirementRequest();
-        request.setTitle("用户登录功能需求");
+        request.setSubject("用户登录功能需求");
         request.setDescription("实现用户登录功能，支持用户名密码登录和手机号验证码登录");
-        request.setType("Feature");
-        request.setPriority("High");
-        request.setProjectId("your-project-id");
-        request.setAssigneeId("developer-id");
+        request.setWorkitemTypeId("requirement-type-id");
+        request.setSpaceId("your-project-id");
+        request.setAssignedTo("developer-id");
         request.setPlannedStartTime(LocalDateTime.now());
         request.setPlannedEndTime(LocalDateTime.now().plusDays(14));
-        request.setTags(Arrays.asList("登录", "用户管理", "安全"));
+        request.setLabels(Arrays.asList("label-id-1", "label-id-2", "label-id-3"));
         request.setSource("产品规划");
         request.setBusinessValue("提升用户体验，保障系统安全");
         request.setAcceptanceCriteria("1. 支持用户名密码登录\n2. 支持手机号验证码登录\n3. 登录失败次数限制\n4. 密码强度验证");
@@ -238,11 +237,11 @@ public class YunxiaoProjectExample {
         
         UpdateRequirementRequest request = new UpdateRequirementRequest();
         request.setId(requirementId);
-        request.setTitle("用户登录功能需求（更新版）");
+        request.setSubject("用户登录功能需求（更新版）");
         request.setDescription("实现用户登录功能，支持多种登录方式，增强安全性");
         request.setStatus("In Progress");
         request.setPriority("High");
-        request.setAssigneeId("senior-developer-id");
+        request.setAssignedTo("senior-developer-id");
         request.setActualStartTime(LocalDateTime.now());
         request.setActualEffort(10.0);
         request.setUpdateReason("需求变更，增加安全性要求");
@@ -267,7 +266,7 @@ public class YunxiaoProjectExample {
         log.info("=== 查询需求列表示例 ===");
         
         RequirementQueryRequest request = new RequirementQueryRequest();
-        request.setProjectId("your-project-id");
+        request.setSpaceId("your-project-id");
         request.setPageNumber(1);
         request.setPageSize(10);
         request.setOrderBy("createTime");
@@ -283,7 +282,7 @@ public class YunxiaoProjectExample {
             RequirementListResponse listResponse = response.getData();
             log.info("需求列表查询成功！");
             log.info("总需求数: {}", listResponse.getTotalCount());
-            log.info("当前页需求数: {}", listResponse.getRequirements().size());
+            log.info("当前页需求数: {}", listResponse.getItems().size());
             
             // 显示统计信息
             if (listResponse.getStatistics() != null) {
@@ -295,7 +294,7 @@ public class YunxiaoProjectExample {
                 log.info("  高优先级: {}", stats.getHighPriorityCount());
             }
             
-            for (RequirementInfo requirement : listResponse.getRequirements()) {
+            for (RequirementInfo requirement : listResponse.getItems()) {
                 log.info("需求: {} - {} ({}) [{}]", 
                     requirement.getTitle(), 
                     requirement.getDescription(), 
@@ -329,12 +328,12 @@ public class YunxiaoProjectExample {
         log.info("=== 创建带依赖关系的需求示例 ===");
         
         CreateRequirementRequest request = new CreateRequirementRequest();
-        request.setTitle("用户注册功能需求");
+        request.setSubject("用户注册功能需求");
         request.setDescription("实现用户注册功能，依赖用户登录功能");
         request.setType("Feature");
         request.setPriority("Medium");
-        request.setProjectId("your-project-id");
-        request.setAssigneeId("developer-id");
+        request.setSpaceId("your-project-id");
+        request.setAssignedTo("developer-id");
         
         // 添加依赖关系
         CreateRequirementRequest.RequirementDependency dependency = 
@@ -414,11 +413,11 @@ public class YunxiaoProjectExample {
         log.info("=== 创建任务示例 ===");
         
         CreateRequirementRequest request = new CreateRequirementRequest();
-        request.setTitle("实现用户登录功能");
+        request.setSubject("实现用户登录功能");
         request.setDescription("开发用户登录模块，包括用户名密码验证");
-        request.setProjectId("test-project-id");
+        request.setSpaceId("test-project-id");
         request.setPriority("High");
-        request.setAssigneeId("developer-id");
+        request.setAssignedTo("developer-id");
         request.setPlannedStartTime(LocalDateTime.now());
         request.setPlannedEndTime(LocalDateTime.now().plusDays(3));
         request.setEstimatedEffort(16.0);
@@ -445,11 +444,11 @@ public class YunxiaoProjectExample {
         log.info("=== 创建缺陷示例 ===");
         
         CreateRequirementRequest request = new CreateRequirementRequest();
-        request.setTitle("登录页面样式显示异常");
+        request.setSubject("登录页面样式显示异常");
         request.setDescription("在Chrome浏览器中，登录按钮样式显示不正确");
-        request.setProjectId("test-project-id");
+        request.setSpaceId("test-project-id");
         request.setPriority("Medium");
-        request.setAssigneeId("frontend-developer-id");
+        request.setAssignedTo("frontend-developer-id");
         request.setPlannedStartTime(LocalDateTime.now());
         request.setPlannedEndTime(LocalDateTime.now().plusDays(1));
         request.setEstimatedEffort(4.0);
@@ -477,7 +476,7 @@ public class YunxiaoProjectExample {
         log.info("=== 查询任务列表示例 ===");
         
         RequirementQueryRequest request = new RequirementQueryRequest();
-        request.setProjectId("test-project-id");
+        request.setSpaceId("test-project-id");
         request.setPageNumber(1);
         request.setPageSize(10);
         request.setStatus("Open");
@@ -503,7 +502,7 @@ public class YunxiaoProjectExample {
         log.info("=== 查询缺陷列表示例 ===");
         
         RequirementQueryRequest request = new RequirementQueryRequest();
-        request.setProjectId("test-project-id");
+        request.setSpaceId("test-project-id");
         request.setPageNumber(1);
         request.setPageSize(10);
         request.setStatus("Open");
@@ -688,6 +687,227 @@ public class YunxiaoProjectExample {
             log.info("失败数量: {}", batchResponse.getFailureCount());
         } else {
             log.error("批量修改缺陷状态失败: {} - {}", response.getErrorCode(), response.getErrorMessage());
+        }
+    }
+
+    /**
+     * 批量创建需求示例
+     */
+    public void batchCreateRequirementsExample() {
+        log.info("=== 批量创建需求示例 ===");
+        
+        // 创建多个需求
+        CreateRequirementRequest req1 = new CreateRequirementRequest();
+        req1.setSubject("用户登录功能");
+        req1.setDescription("实现用户登录功能，包括用户名密码验证");
+        req1.setSpaceId("test-project-id");
+        req1.setPriority("High");
+        req1.setAssignedTo("developer-1");
+        req1.setModule("用户管理");
+        req1.setVersion("v1.0");
+        req1.setComplexity("Medium");
+        req1.setEstimatedEffort(8.0);
+        
+        CreateRequirementRequest req2 = new CreateRequirementRequest();
+        req2.setSubject("用户注册功能");
+        req2.setDescription("实现用户注册功能，包括邮箱验证");
+        req2.setSpaceId("test-project-id");
+        req2.setPriority("High");
+        req2.setAssignedTo("developer-2");
+        req2.setModule("用户管理");
+        req2.setVersion("v1.0");
+        req2.setComplexity("Medium");
+        req2.setEstimatedEffort(6.0);
+        
+        CreateRequirementRequest req3 = new CreateRequirementRequest();
+        req3.setSubject("密码重置功能");
+        req3.setDescription("实现密码重置功能，通过邮箱发送重置链接");
+        req3.setSpaceId("test-project-id");
+        req3.setPriority("Medium");
+        req3.setAssignedTo("developer-1");
+        req3.setModule("用户管理");
+        req3.setVersion("v1.0");
+        req3.setComplexity("Low");
+        req3.setEstimatedEffort(4.0);
+        
+        // 创建批量请求
+        BatchCreateRequest batchRequest = new BatchCreateRequest();
+        batchRequest.setItems(Arrays.asList(req1, req2, req3));
+        
+        // 设置批量操作选项
+        BatchCreateRequest.BatchOptions options = new BatchCreateRequest.BatchOptions();
+        options.setContinueOnError(true);
+        options.setReturnDetailedResults(true);
+        options.setValidateAll(false);
+        batchRequest.setOptions(options);
+        
+        BaseResponse<BatchCreateResponse> response = requirementClient.batchCreateRequirements(batchRequest);
+        
+        if (response.isSuccess()) {
+            BatchCreateResponse batchResponse = response.getData();
+            log.info("批量创建需求成功！");
+            log.info("总数量: {}", batchResponse.getTotalCount());
+            log.info("成功数量: {}", batchResponse.getSuccessCount());
+            log.info("失败数量: {}", batchResponse.getFailureCount());
+            
+            if (batchResponse.getSuccessItems() != null) {
+                log.info("成功创建的需求:");
+                batchResponse.getSuccessItems().forEach(item -> 
+                    log.info("  - ID: {}, 标题: {}", item.getId(), item.getTitle())
+                );
+            }
+            
+            if (batchResponse.getFailedItems() != null && !batchResponse.getFailedItems().isEmpty()) {
+                log.info("创建失败的需求:");
+                batchResponse.getFailedItems().forEach(failure -> 
+                    log.info("  - 索引: {}, 错误: {}", failure.getIndex(), failure.getErrorMessage())
+                );
+            }
+        } else {
+            log.error("批量创建需求失败: {} - {}", response.getErrorCode(), response.getErrorMessage());
+        }
+    }
+
+    /**
+     * 批量创建任务示例
+     */
+    public void batchCreateTasksExample() {
+        log.info("=== 批量创建任务示例 ===");
+        
+        // 创建多个任务
+        CreateRequirementRequest task1 = new CreateRequirementRequest();
+        task1.setSubject("设计用户登录界面");
+        task1.setDescription("设计用户登录页面的UI界面");
+        task1.setSpaceId("test-project-id");
+        task1.setPriority("High");
+        task1.setAssignedTo("ui-designer");
+        task1.setModule("用户界面");
+        task1.setVersion("v1.0");
+        task1.setComplexity("Low");
+        task1.setEstimatedEffort(4.0);
+        
+        CreateRequirementRequest task2 = new CreateRequirementRequest();
+        task2.setSubject("实现登录API接口");
+        task2.setDescription("实现用户登录的后端API接口");
+        task2.setSpaceId("test-project-id");
+        task2.setPriority("High");
+        task2.setAssignedTo("backend-developer");
+        task2.setModule("后端服务");
+        task2.setVersion("v1.0");
+        task2.setComplexity("Medium");
+        task2.setEstimatedEffort(8.0);
+        
+        CreateRequirementRequest task3 = new CreateRequirementRequest();
+        task3.setSubject("编写登录功能测试用例");
+        task3.setDescription("编写用户登录功能的单元测试和集成测试");
+        task3.setSpaceId("test-project-id");
+        task3.setPriority("Medium");
+        task3.setAssignedTo("qa-engineer");
+        task3.setModule("测试");
+        task3.setVersion("v1.0");
+        task3.setComplexity("Medium");
+        task3.setEstimatedEffort(6.0);
+        
+        // 创建批量请求
+        BatchCreateRequest batchRequest = new BatchCreateRequest();
+        batchRequest.setItems(Arrays.asList(task1, task2, task3));
+        
+        // 设置批量操作选项
+        BatchCreateRequest.BatchOptions options = new BatchCreateRequest.BatchOptions();
+        options.setContinueOnError(true);
+        options.setReturnDetailedResults(true);
+        batchRequest.setOptions(options);
+        
+        BaseResponse<BatchCreateResponse> response = taskClient.batchCreateTasks(batchRequest);
+        
+        if (response.isSuccess()) {
+            BatchCreateResponse batchResponse = response.getData();
+            log.info("批量创建任务成功！");
+            log.info("总数量: {}", batchResponse.getTotalCount());
+            log.info("成功数量: {}", batchResponse.getSuccessCount());
+            log.info("失败数量: {}", batchResponse.getFailureCount());
+            
+            if (batchResponse.getSuccessItems() != null) {
+                log.info("成功创建的任务:");
+                batchResponse.getSuccessItems().forEach(item -> 
+                    log.info("  - ID: {}, 标题: {}", item.getId(), item.getTitle())
+                );
+            }
+        } else {
+            log.error("批量创建任务失败: {} - {}", response.getErrorCode(), response.getErrorMessage());
+        }
+    }
+
+    /**
+     * 批量创建缺陷示例
+     */
+    public void batchCreateBugsExample() {
+        log.info("=== 批量创建缺陷示例 ===");
+        
+        // 创建多个缺陷
+        CreateRequirementRequest bug1 = new CreateRequirementRequest();
+        bug1.setSubject("登录页面样式显示异常");
+        bug1.setDescription("在Chrome浏览器中，登录按钮样式显示不正确");
+        bug1.setSpaceId("test-project-id");
+        bug1.setPriority("Medium");
+        bug1.setAssignedTo("frontend-developer");
+        bug1.setModule("用户界面");
+        bug1.setVersion("v1.0");
+        bug1.setComplexity("Low");
+        bug1.setEstimatedEffort(2.0);
+        bug1.setSource("测试发现");
+        
+        CreateRequirementRequest bug2 = new CreateRequirementRequest();
+        bug2.setSubject("登录接口返回错误状态码");
+        bug2.setDescription("当用户名不存在时，接口返回500错误而不是400错误");
+        bug2.setSpaceId("test-project-id");
+        bug2.setPriority("High");
+        bug2.setAssignedTo("backend-developer");
+        bug2.setModule("后端服务");
+        bug2.setVersion("v1.0");
+        bug2.setComplexity("Medium");
+        bug2.setEstimatedEffort(4.0);
+        bug2.setSource("用户反馈");
+        
+        CreateRequirementRequest bug3 = new CreateRequirementRequest();
+        bug3.setSubject("密码重置邮件发送失败");
+        bug3.setDescription("在某些情况下，密码重置邮件无法正常发送");
+        bug3.setSpaceId("test-project-id");
+        bug3.setPriority("High");
+        bug3.setAssignedTo("backend-developer");
+        bug3.setModule("邮件服务");
+        bug3.setVersion("v1.0");
+        bug3.setComplexity("High");
+        bug3.setEstimatedEffort(6.0);
+        bug3.setSource("生产环境");
+        
+        // 创建批量请求
+        BatchCreateRequest batchRequest = new BatchCreateRequest();
+        batchRequest.setItems(Arrays.asList(bug1, bug2, bug3));
+        
+        // 设置批量操作选项
+        BatchCreateRequest.BatchOptions options = new BatchCreateRequest.BatchOptions();
+        options.setContinueOnError(true);
+        options.setReturnDetailedResults(true);
+        batchRequest.setOptions(options);
+        
+        BaseResponse<BatchCreateResponse> response = bugClient.batchCreateBugs(batchRequest);
+        
+        if (response.isSuccess()) {
+            BatchCreateResponse batchResponse = response.getData();
+            log.info("批量创建缺陷成功！");
+            log.info("总数量: {}", batchResponse.getTotalCount());
+            log.info("成功数量: {}", batchResponse.getSuccessCount());
+            log.info("失败数量: {}", batchResponse.getFailureCount());
+            
+            if (batchResponse.getSuccessItems() != null) {
+                log.info("成功创建的缺陷:");
+                batchResponse.getSuccessItems().forEach(item -> 
+                    log.info("  - ID: {}, 标题: {}", item.getId(), item.getTitle())
+                );
+            }
+        } else {
+            log.error("批量创建缺陷失败: {} - {}", response.getErrorCode(), response.getErrorMessage());
         }
     }
 }

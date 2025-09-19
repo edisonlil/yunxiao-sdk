@@ -45,4 +45,9 @@ public interface RequirementClient {
      * 批量修改需求状态
      */
     BaseResponse<BatchUpdateStatusResponse> batchUpdateRequirementStatus(BatchUpdateStatusRequest request);
+
+    /**
+     * 批量创建需求
+     */
+    BaseResponse<BatchCreateResponse> batchCreateRequirements(BatchCreateRequest request);
 }

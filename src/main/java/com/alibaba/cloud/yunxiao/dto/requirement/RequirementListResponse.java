@@ -14,9 +14,9 @@ import java.util.List;
 public class RequirementListResponse {
 
     /**
-     * 需求列表
+     * 工作项列表
      */
-    private List<RequirementInfo> requirements;
+    private List<RequirementInfo> items;
 
     /**
      * 总数量

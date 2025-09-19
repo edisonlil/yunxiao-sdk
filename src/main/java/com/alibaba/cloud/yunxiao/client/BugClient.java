@@ -45,4 +45,9 @@ public interface BugClient {
      * 批量修改缺陷状态
      */
     BaseResponse<BatchUpdateStatusResponse> batchUpdateBugStatus(BatchUpdateStatusRequest request);
+
+    /**
+     * 批量创建缺陷
+     */
+    BaseResponse<BatchCreateResponse> batchCreateBugs(BatchCreateRequest request);
 }

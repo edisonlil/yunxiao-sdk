@@ -34,6 +34,16 @@ public class YunxiaoProperties {
     private String accessKeySecret;
 
     /**
+     * 组织ID
+     */
+    private String organizationId;
+
+    /**
+     * 个人访问令牌 (对应官方API的x-yunxiao-token)
+     */
+    private String token;
+
+    /**
      * 请求超时时间（毫秒）
      */
     private int timeout = 30000;

@@ -16,35 +16,72 @@ import java.util.Map;
 public class CreateRequirementRequest {
 
     /**
-     * 需求标题
+     * 工作项标题 (对应官方API的subject)
      */
-    private String title;
+    private String subject;
 
     /**
-     * 需求描述
+     * 工作项描述 (对应官方API的description)
      */
     private String description;
 
     /**
-     * 需求类型
+     * 工作项类型ID (对应官方API的workitemTypeId) - 必填
      */
-    private String type = "Feature";
+    private String workitemTypeId;
 
     /**
-     * 优先级
+     * 空间ID，项目ID (对应官方API的spaceId) - 必填
      */
-    private String priority = "Medium";
+    private String spaceId;
 
     /**
-     * 项目ID
+     * 指派人userId (对应官方API的assignedTo) - 必填
      */
-    private String projectId;
+    private String assignedTo;
 
     /**
-     * 指派人ID
+     * 父工作项ID (对应官方API的parentId)
      */
-    private String assigneeId;
+    private String parentId;
 
+    /**
+     * 参与人userId列表 (对应官方API的participants)
+     */
+    private List<String> participants;
+
+    /**
+     * 抄送人userId列表 (对应官方API的trackers)
+     */
+    private List<String> trackers;
+
+    /**
+     * 验证人userId (对应官方API的verifier)
+     */
+    private String verifier;
+
+    /**
+     * 关联的标签ID列表 (对应官方API的labels)
+     */
+    private List<String> labels;
+
+    /**
+     * 关联的迭代ID (对应官方API的sprint)
+     */
+    private String sprint;
+
+    /**
+     * 关联的版本ID列表 (对应官方API的versions)
+     */
+    private List<String> versions;
+
+    /**
+     * 自定义字段值 (对应官方API的customFieldValues)
+     * 格式为：{"fieldId":"value"}，多值value用逗号隔开
+     */
+    private Map<String, String> customFieldValues;
+
+    // 以下为扩展字段，用于更丰富的工作项信息
     /**
      * 计划开始时间
      */
@@ -54,26 +91,6 @@ public class CreateRequirementRequest {
      * 计划结束时间
      */
     private LocalDateTime plannedEndTime;
-
-    /**
-     * 需求标签
-     */
-    private List<String> tags;
-
-    /**
-     * 自定义字段
-     */
-    private Map<String, Object> customFields;
-
-    /**
-     * 父需求ID
-     */
-    private String parentId;
-
-    /**
-     * 关联的需求ID列表
-     */
-    private List<String> relatedRequirementIds;
 
     /**
      * 需求来源
@@ -89,21 +106,6 @@ public class CreateRequirementRequest {
      * 验收标准
      */
     private String acceptanceCriteria;
-
-    /**
-     * 需求模板ID
-     */
-    private String templateId;
-
-    /**
-     * 是否自动生成需求编号
-     */
-    private Boolean autoGenerateNumber = true;
-
-    /**
-     * 需求编号前缀
-     */
-    private String numberPrefix;
 
     /**
      * 需求分类
@@ -134,30 +136,4 @@ public class CreateRequirementRequest {
      * 实际工作量（人天）
      */
     private Double actualEffort;
-
-    /**
-     * 需求依赖
-     */
-    private List<RequirementDependency> dependencies;
-
-    /**
-     * 需求依赖信息
-     */
-    @Data
-    public static class RequirementDependency {
-        /**
-         * 依赖的需求ID
-         */
-        private String requirementId;
-
-        /**
-         * 依赖类型：BLOCKED_BY（被阻塞）、BLOCKS（阻塞）、RELATED（关联）
-         */
-        private String dependencyType;
-
-        /**
-         * 依赖描述
-         */
-        private String description;
-    }
 }

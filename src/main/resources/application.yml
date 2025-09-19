@@ -12,6 +12,12 @@ yunxiao:
   # 访问密钥Secret（建议通过环境变量配置）
   access-key-secret: ${YUNXIAO_ACCESS_KEY_SECRET:your-access-key-secret}
   
+  # 组织ID（必填）
+  organization-id: ${YUNXIAO_ORGANIZATION_ID:your-organization-id}
+  
+  # 个人访问令牌（推荐使用，优先级高于AccessKey）
+  token: ${YUNXIAO_TOKEN:your-personal-access-token}
+  
   # 请求超时时间（毫秒）
   timeout: 30000
   

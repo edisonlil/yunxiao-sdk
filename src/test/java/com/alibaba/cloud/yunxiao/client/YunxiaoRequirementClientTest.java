@@ -131,7 +131,7 @@ class YunxiaoRequirementClientTest {
     @Test
     void testListRequirementsWithNullRequest() {
         // 执行测试（传入null）
-        BaseResponse<RequirementListResponse> response = client.listRequirements(null);
+        BaseResponse<RequirementListResponse> response = client.listWorkItems(null);
 
         // 验证结果
         assertNotNull(response);

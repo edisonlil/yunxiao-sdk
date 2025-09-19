@@ -3,6 +3,7 @@ package com.alibaba.cloud.yunxiao.client;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
+import cn.hutool.http.Method;
 import com.alibaba.cloud.yunxiao.config.YunxiaoProperties;
 import com.alibaba.cloud.yunxiao.dto.BaseResponse;
 import com.alibaba.fastjson2.JSON;
@@ -38,7 +39,7 @@ public abstract class AbstractYunxiaoClient {
      * 构建API URL
      */
     protected String buildApiUrl(String path) {
-        return properties.getGatewayUrl() + "/api" + path;
+        return properties.getGatewayUrl() + "/oapi/v1/projex/organizations/" + properties.getOrganizationId() + path;
     }
 
     /**
@@ -48,7 +49,7 @@ public abstract class AbstractYunxiaoClient {
         Map<String, String> headers = buildHeaders(method, url, requestBody);
         
         HttpRequest request = HttpRequest.of(url)
-                .method(method)
+                .method(Method.valueOf(method))
                 .headerMap(headers, true)
                 .timeout(properties.getTimeout())
                 .setConnectionTimeout(properties.getConnectTimeout());
@@ -76,6 +77,21 @@ public abstract class AbstractYunxiaoClient {
         headers.put("Accept", "application/json");
         headers.put("User-Agent", "yunxiao-sdk/1.0.0");
         
+        // 云效个人访问令牌认证 (根据官方文档)
+        if (StrUtil.isNotBlank(properties.getToken())) {
+            headers.put("x-yunxiao-token", properties.getToken());
+        } else {
+            // 如果没有token，使用AccessKey认证作为备选方案
+            buildAccessKeyHeaders(headers, method, url, requestBody);
+        }
+        
+        return headers;
+    }
+
+    /**
+     * 构建AccessKey认证头信息 (备选方案)
+     */
+    private void buildAccessKeyHeaders(Map<String, String> headers, String method, String url, String requestBody) {
         // 时间戳
         String timestamp = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")
                 .withZone(ZoneOffset.UTC)
@@ -99,8 +115,6 @@ public abstract class AbstractYunxiaoClient {
         // 签名
         String signature = generateSignature(method, url, requestBody, timestamp);
         headers.put("X-Acs-Signature", signature);
-        
-        return headers;
     }
 
     /**

@@ -11,6 +11,16 @@
 - 📦 开箱即用的自动配置
 - 🧪 完整的单元测试覆盖
 - 📚 详细的使用示例和文档
+- ✅ **完全符合云效官方API规范**
+
+## 重要说明
+
+本SDK已根据[云效官方开发文档](https://help.aliyun.com/zh/yunxiao/developer-reference/createworkitem)进行了修正，确保API调用的准确性：
+
+- ✅ **API端点**: 使用正确的云效API端点格式 `/oapi/v1/projex/organizations/{organizationId}/workitems`
+- ✅ **认证方式**: 支持个人访问令牌(x-yunxiao-token)和AccessKey两种认证方式
+- ✅ **请求参数**: 完全符合官方API规范，包含所有必填字段
+- ✅ **字段映射**: 正确映射官方API的所有参数名称
 
 ## 快速开始
 
@@ -34,6 +44,11 @@
 yunxiao:
   enabled: true
   gateway-url: https://devops.cn-hangzhou.aliyuncs.com
+  # 组织ID（必填）
+  organization-id: ${YUNXIAO_ORGANIZATION_ID:your-organization-id}
+  # 个人访问令牌（推荐使用）
+  token: ${YUNXIAO_TOKEN:your-personal-access-token}
+  # AccessKey认证（备选方案）
   access-key-id: ${YUNXIAO_ACCESS_KEY_ID:your-access-key-id}
   access-key-secret: ${YUNXIAO_ACCESS_KEY_SECRET:your-access-key-secret}
   timeout: 30000
@@ -90,10 +105,11 @@ if (listResponse.isSuccess()) {
 
 // 创建需求
 CreateRequirementRequest createReqRequest = new CreateRequirementRequest();
-createReqRequest.setTitle("用户登录功能");
+createReqRequest.setSubject("用户登录功能");
 createReqRequest.setDescription("实现用户登录功能");
-createReqRequest.setProjectId("project-id");
-createReqRequest.setPriority("High");
+createReqRequest.setSpaceId("project-id");
+createReqRequest.setAssignedTo("developer-id");
+createReqRequest.setWorkitemTypeId("requirement-type-id");
 
 BaseResponse<RequirementInfo> createReqResponse = requirementClient.createRequirement(createReqRequest);
 if (createReqResponse.isSuccess()) {
@@ -170,6 +186,33 @@ if (batchUpdateResponse.isSuccess()) {
     BatchUpdateStatusResponse batchResponse = batchUpdateResponse.getData();
     System.out.println("批量修改任务状态成功，成功数量: " + batchResponse.getSuccessCount());
 }
+
+// 批量创建需求
+CreateRequirementRequest req1 = new CreateRequirementRequest();
+req1.setTitle("用户登录功能");
+req1.setDescription("实现用户登录功能");
+req1.setProjectId("project-id");
+req1.setPriority("High");
+
+CreateRequirementRequest req2 = new CreateRequirementRequest();
+req2.setTitle("用户注册功能");
+req2.setDescription("实现用户注册功能");
+req2.setProjectId("project-id");
+req2.setPriority("High");
+
+BatchCreateRequest batchCreateRequest = new BatchCreateRequest();
+batchCreateRequest.setItems(Arrays.asList(req1, req2));
+
+BatchCreateRequest.BatchOptions options = new BatchCreateRequest.BatchOptions();
+options.setContinueOnError(true);
+options.setReturnDetailedResults(true);
+batchCreateRequest.setOptions(options);
+
+BaseResponse<BatchCreateResponse> batchCreateResponse = requirementClient.batchCreateRequirements(batchCreateRequest);
+if (batchCreateResponse.isSuccess()) {
+    BatchCreateResponse batchResponse = batchCreateResponse.getData();
+    System.out.println("批量创建需求成功，成功数量: " + batchResponse.getSuccessCount());
+}
 ```
 
 ## API 文档
@@ -242,6 +285,11 @@ BaseResponse<RequirementInfo> updateRequirementStatus(UpdateStatusRequest reques
 BaseResponse<BatchUpdateStatusResponse> batchUpdateRequirementStatus(BatchUpdateStatusRequest request)
 ```
 
+#### 批量创建需求
+```java
+BaseResponse<BatchCreateResponse> batchCreateRequirements(BatchCreateRequest request)
+```
+
 ### TaskClient
 
 任务管理API客户端接口，提供以下方法：
@@ -281,6 +329,11 @@ BaseResponse<RequirementInfo> updateTaskStatus(UpdateStatusRequest request)
 BaseResponse<BatchUpdateStatusResponse> batchUpdateTaskStatus(BatchUpdateStatusRequest request)
 ```
 
+#### 批量创建任务
+```java
+BaseResponse<BatchCreateResponse> batchCreateTasks(BatchCreateRequest request)
+```
+
 ### BugClient
 
 缺陷管理API客户端接口，提供以下方法：
@@ -318,6 +371,11 @@ BaseResponse<RequirementInfo> updateBugStatus(UpdateStatusRequest request)
 #### 批量修改缺陷状态
 ```java
 BaseResponse<BatchUpdateStatusResponse> batchUpdateBugStatus(BatchUpdateStatusRequest request)
+```
+
+#### 批量创建缺陷
+```java
+BaseResponse<BatchCreateResponse> batchCreateBugs(BatchCreateRequest request)
 ```
 
 ### 请求和响应对象
@@ -442,6 +500,20 @@ BaseResponse<BatchUpdateStatusResponse> batchUpdateBugStatus(BatchUpdateStatusRe
 - `successIds`: 成功更新的工作项ID列表
 - `failedIds`: 失败的工作项ID列表
 - `failures`: 失败详情
+- `totalCount`: 总数量
+- `successCount`: 成功数量
+- `failureCount`: 失败数量
+
+#### BatchCreateRequest
+- `items`: 工作项创建请求列表
+- `options`: 批量操作选项
+  - `continueOnError`: 是否在遇到错误时继续处理其他项目
+  - `returnDetailedResults`: 是否返回详细的结果信息
+  - `validateAll`: 是否验证所有项目后再执行创建
+
+#### BatchCreateResponse
+- `successItems`: 成功创建的工作项列表
+- `failedItems`: 失败的工作项列表
 - `totalCount`: 总数量
 - `successCount`: 成功数量
 - `failureCount`: 失败数量
